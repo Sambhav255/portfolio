@@ -43,52 +43,40 @@
   },
   "journey": [
     {
-      "date": "19 Years",
-      "title": "Kathmandu Roots",
-      "impact": "Built a foundation of scrappy problem-solving and high agency in the 'Himalayan classroom'.",
-      "lesson": "Ambiguity is an opportunity to build from scratch."
+      "date": "Age 0–19",
+      "title": "Kathmandu roots",
+      "impact": "Grew up in Kathmandu with the Himalayas as my backdrop. My first business classroom was a family motorcycle dealership where I watched money move, margins compress, and customers negotiate. Learned early that numbers tell stories — if you know how to read them.",
+      "lesson": ""
     },
     {
-      "date": "Age 13",
-      "title": "Family Dealership",
-      "impact": "Ground-level education in financial operations at a Bajaj motorcycle showroom; reduced discrepancies by 15% through enhanced controls.",
-      "lesson": "Understanding the customer at the ground level is the only way to build systemic solutions."
+      "date": "Age 13–18",
+      "title": "The family showroom",
+      "impact": "Worked the floor at our Bajaj motorcycle dealership in Kathmandu — demoing products, handling objections, closing sales, and following up with customers after the fact. Also helped reconcile accounts and tighten financial controls, cutting discrepancies by 15%. First lesson in the gap between what a product does and how you sell it.",
+      "lesson": ""
     },
     {
-      "date": "Aug 2022",
-      "title": "Yardstick Election",
-      "impact": "Navigated extreme ambiguity in a new country to win 1,600+ constituents via a high-touch grassroots 'GTM' strategy.",
-      "lesson": "Trust is built through one-on-one engagement, not just broad signals."
+      "date": "Age 19 · 2022",
+      "title": "Crossing an ocean",
+      "impact": "Moved to Minnesota knowing no one. In my first month, I ran for First-Year Class President carrying a homemade poster on a yardstick, talking to students one by one. Won. Became the first international student elected to the role at UST. Managed a $115,000 budget across 150+ student organizations. Learned that showing up differently is a strategy.",
+      "lesson": ""
     },
     {
-      "date": "Mar 2023 – Present",
-      "title": "VR Lab",
-      "impact": "Translating qualitative user research from 250+ students into a strategic technology roadmap for campus-wide adoption.",
-      "lesson": "Hardware is a bottleneck; software onboarding must be frictionless to scale."
+      "date": "2023–2024",
+      "title": "London and the library",
+      "impact": "Studied abroad in London. Volunteered at Kilburn Library in Camden teaching digital literacy to 75+ residents and 50+ local entrepreneurs. Built permanent instructional guides so the help would outlast my presence. An 80-year-old sent her first email. I've bungee jumped off a 750-foot bridge in Nepal — that felt about equal.",
+      "lesson": ""
     },
     {
-      "date": "Spring 2024",
-      "title": "London Digital Literacy",
-      "impact": "Identified systemic gaps in literacy; designed and shipped permanent, scalable instructional frameworks for 75+ users to ensure lasting impact.",
-      "lesson": "A solution isn't successful unless it works when you aren't there."
+      "date": "2023–2025",
+      "title": "Building in three places at once",
+      "impact": "Managing the VR Lab at STELAR — a fleet of 100+ Meta Quest headsets serving 250+ students across nursing and business programs. Simultaneously running 75+ algorithmic trading backtests as a Quantitative Researcher. Joined LEAF Lab as a Product Management Fellow, working across EdTech and eCommerce products in agile sprints. Shipped CardSense and VibeTicker on the side using Cursor and Gemini API. Learned what it actually means to have too many tabs open — and how to prioritize anyway.",
+      "lesson": ""
     },
     {
-      "date": "Jun 2024 – Jun 2025",
-      "title": "Quant Research",
-      "impact": "Applied hypothesis-driven experimentation across 75+ backtests, establishing a scalable API framework that drove a 12% portfolio return.",
-      "lesson": "Data rigor validates intuition; automation scales it."
-    },
-    {
-      "date": "Aug 2025",
-      "title": "LEAF Lab",
-      "impact": "Managing product backlogs and sprint planning for AI-powered features; synthesizing insights into prioritized roadmaps aligned with business OKRs.",
-      "lesson": "Agile success is about clear acceptance criteria and cross-functional alignment."
-    },
-    {
-      "date": "Oct 2025",
-      "title": "Ruta'al",
-      "impact": "Co-founded a USSD fintech for unbanked workers; secured $6,000 in seed funding by demonstrating product-market fit across two emerging markets.",
-      "lesson": "Solve for 'Zero Trust' before you solve for the technology."
+      "date": "Now · 2025–2026",
+      "title": "Ruta'al and what's next",
+      "impact": "Co-founding a USSD-based fintech platform serving unbanked informal workers in Mexico and Nepal — places where financial infrastructure is a privilege, not a given. Won $6,000 across business competitions. Building the product, running investor pitches, and finishing my degree simultaneously. Graduating May 2026. Looking for the next hard problem.",
+      "lesson": ""
     }
   ],
   "projects": [
@@ -96,23 +84,51 @@
       "name": "Ruta'al — Financial Inclusion Platform",
       "oneLiner": "Co-founded fintech for unbanked workers",
       "description": "Co-founded a USSD-based fintech platform serving unbanked informal workers in Mexico and Nepal. Built the functional prototype, conducted TAM/SAM/SOM analysis, led investor pitches, and won $6,000 across business competitions.",
-      "link": "#",
+      "link": "https://rutaal-agent.vercel.app/",
+      "demoUrl": "https://rutaal-agent.vercel.app/",
+      "pitchDeckUrl": "#",
+      "repoUrl": "#",
+      "why": "I grew up seeing how hard it is to access reliable financial tools outside traditional banking. Ruta'al exists to remove friction for unbanked workers using channels they already trust (USSD) and a product-first approach to credibility and adoption.",
+      "results": [
+        "Won $6,000 across business competitions",
+        "Validated demand across Nepal and Mexico through early interviews and prototype demos"
+      ],
       "tags": ["Fintech", "Product Strategy", "Emerging Markets", "USSD"]
     },
     {
       "name": "VibeTicker — Market Sentiment Dashboard",
       "oneLiner": "Real-time sentiment vs. price data",
       "description": "Real-time dashboard comparing AI-analyzed financial news sentiment with live equity, ETF, and crypto price data. Built with TypeScript and server-side API integration using Gemini.",
-      "link": "#",
+      "link": "https://vibeticker-rose.vercel.app/",
       "prdUrl": "#",
+      "demoUrl": "https://vibeticker-rose.vercel.app/",
+      "repoUrl": "#",
+      "why": "This started from my obsession with markets: I wanted a single lens that connects narrative (news) to price action in real time, so you can test whether sentiment actually leads returns or just feels convincing.",
       "tags": ["Fintech", "AI", "TypeScript", "Real-time Data"]
     },
     {
       "name": "CardSense — AI Credit Card Optimizer",
       "oneLiner": "Full-stack rewards optimizer with Gemini",
       "description": "Full-stack web app built with React, Cursor, and Gemini API. Analyzes transaction data to identify optimal card rewards and calculate annual opportunity costs across 15+ products. Deployed on Vercel.",
-      "link": "#",
+      "link": "https://cardsense-psi.vercel.app/",
+      "demoUrl": "https://cardsense-psi.vercel.app/",
+      "repoUrl": "#",
+      "why": "I’m fascinated by consumer fintech and incentives. CardSense exists to turn messy spending data into clear, actionable decisions—what card to use, what you’re leaving on the table, and how to optimize rewards without spreadsheets.",
       "tags": ["AI", "React", "Gemini API", "Consumer Fintech"]
+    },
+    {
+      "name": "Common Table — Campus Food Shelf Resources",
+      "oneLiner": "Hackathon app for nearby food resources",
+      "description": "Built a weekly-view resource finder for the St. Thomas community showing food shelves within a 15-mile radius. Includes calendar-based discovery and a map view for fast navigation.",
+      "link": "https://buildfest-amber.vercel.app/",
+      "demoUrl": "https://buildfest-amber.vercel.app/",
+      "repoUrl": "https://github.com/Sambhav255/Buildfest_SambhavUpdate",
+      "why": "Built at Tommie Buildfest to make it easier to find nearby food shelf resources when the campus pantry is closed—optimized for speed, clarity, and real-world constraints.",
+      "results": [
+        "Shipped a working demo during the hackathon",
+        "Designed for quick recruiter-style scanning (calendar + map)"
+      ],
+      "tags": ["Product", "React", "Hackathon", "Social Impact"]
     }
   ],
   "contact": {

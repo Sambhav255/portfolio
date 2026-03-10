@@ -16,7 +16,6 @@ interface ContactData {
 }
 
 export function ContactSection({
-  data: _data,
   contact,
 }: {
   data: SectionData
@@ -24,7 +23,6 @@ export function ContactSection({
 }) {
   const headlineRef = useRef<HTMLHeadingElement>(null)
   const subRef = useRef<HTMLParagraphElement>(null)
-  const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const headlineEl = headlineRef.current
@@ -43,14 +41,22 @@ export function ContactSection({
     }
   }, [contact.headline])
 
+  const emailAddr = contact.email.replace('mailto:', '')
+
   return (
-    <div ref={sectionRef} className="contact-inner">
+    <div className="contact-inner">
+      <div className="contact-availability">
+        <span className="availability-dot" />
+        Currently open to product &amp; data roles.
+      </div>
       <h2 ref={headlineRef} className="contact-headline">
         Let's build something.
       </h2>
       <p ref={subRef} className="contact-sub">
         {contact.headline}
       </p>
+      <p className="contact-response">Response time: usually within 24 hours.</p>
+      <p className="contact-email-text">{emailAddr}</p>
       <div className="contact-buttons">
         <a href={contact.email.startsWith('mailto:') ? contact.email : `mailto:${contact.email}`} className="btn-glass magnetic-el">
           {contact.cta}

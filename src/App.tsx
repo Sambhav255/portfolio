@@ -1,15 +1,26 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLenis } from './hooks/useLenis'
 import { useMagnetic } from './hooks/useMagnetic'
-import { Scene } from './components/Scene'
+import { BackgroundMagnetField } from './components/BackgroundMagnetField'
 import { Navbar, TabId } from './components/Navbar'
 import { HomeView } from './components/HomeView'
 import { ProjectsSection } from './components/ProjectsSection'
 import { JourneyResume } from './components/JourneyResume'
 import { ContactSection } from './components/ContactSection'
+import { Footer } from './components/Footer'
 import experience from './experience.json'
 import './index.css'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const TAB_PROGRESS: Record<TabId, number> = {
+  home: 0,
+  projects: 0.4,
+  journey: 0.6,
+  contact: 0.9,
+}
 
 function App() {
   useLenis()
@@ -18,95 +29,136 @@ function App() {
   const morphProgressRef = useRef(0)
   const journeyGlowRef = useRef(0)
   const [activeTab, setActiveTab] = useState<TabId>('home')
-  const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 })
-  const [cursorExpanded, setCursorExpanded] = useState(false)
+  const cursorRef = useRef<HTMLDivElement>(null)
+  const cursorExpandedRef = useRef(false)
   const panelRef = useRef<HTMLDivElement>(null)
   const prevTabRef = useRef<TabId>('home')
 
-  const TAB_PROGRESS: Record<TabId, number> = {
-    home: 0,
-    projects: 0.4,
-    journey: 0.6,
-    contact: 0.9,
-  }
-
-  useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7245/ingest/3952a87a-600c-469a-8b44-53ba21afdd5b', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        runId: 'initial',
-        hypothesisId: 'H0',
-        location: 'src/App.tsx:32',
-        message: 'App mounted',
-        data: {},
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {})
-    // #endregion agent log
+  const handleTabChange = useCallback((tab: TabId) => {
+    setActiveTab(tab)
   }, [])
 
   useEffect(() => {
-    morphProgressRef.current = activeTab === 'journey' ? 1 : 0
-    journeyGlowRef.current = activeTab === 'journey' ? 1 : 0
-    scrollProgressRef.current = TAB_PROGRESS[activeTab]
-    // #region agent log
-    fetch('http://127.0.0.1:7245/ingest/3952a87a-600c-469a-8b44-53ba21afdd5b', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        runId: 'initial',
-        hypothesisId: 'H1',
-        location: 'src/App.tsx:33',
-        message: 'activeTab changed',
-        data: { activeTab, tabProgress: TAB_PROGRESS[activeTab] },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {})
-    // #endregion agent log
+    const targetMorph = activeTab === 'journey' ? 1 : 0
+    const targetGlow = activeTab === 'journey' ? 1 : 0
+    const targetScroll = TAB_PROGRESS[activeTab]
+
+    gsap.to(morphProgressRef, {
+      current: targetMorph,
+      duration: 1.5,
+      ease: 'power2.inOut',
+    })
+    gsap.to(journeyGlowRef, {
+      current: targetGlow,
+      duration: 1.5,
+      ease: 'power2.inOut',
+    })
+    gsap.to(scrollProgressRef, {
+      current: targetScroll,
+      duration: 1.5,
+      ease: 'power2.inOut',
+    })
   }, [activeTab])
 
   useEffect(() => {
-    // #region agent log
-    const badge = document.getElementById('__bootbadge')
-    if (badge) badge.textContent = 'REACT: App mounted'
-    // #endregion agent log
-  }, [])
+    const container = panelRef.current
+    if (!container) return
 
-  useEffect(() => {
     const prev = prevTabRef.current
     const next = activeTab
+
+    const panels = Array.from(container.querySelectorAll('[data-tab]')) as HTMLElement[]
+    panels.forEach((p) => {
+      gsap.set(p, { autoAlpha: 0 })
+      p.style.position = 'absolute'
+      p.style.pointerEvents = 'none'
+    })
+
+    if (prev === next) {
+      const current = container.querySelector(`[data-tab="${next}"]`) as HTMLElement | null
+      if (current) {
+        gsap.set(current, {
+          autoAlpha: 1,
+          position: 'relative',
+          pointerEvents: 'auto',
+        })
+      }
+      return
+    }
+
     prevTabRef.current = next
-    const outgoing = panelRef.current?.querySelector(`[data-tab="${prev}"]`) as HTMLElement
-    const incoming = panelRef.current?.querySelector(`[data-tab="${next}"]`) as HTMLElement
-    if (prev !== next) {
-      if (outgoing) gsap.to(outgoing, { opacity: 0, duration: 0.2, ease: 'power2.in' })
-      if (incoming) gsap.fromTo(incoming, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out', delay: 0.05 })
-    } else if (incoming) {
-      gsap.set(incoming, { opacity: 1 })
+    const outgoing = container.querySelector(`[data-tab="${prev}"]`) as HTMLElement | null
+    const incoming = container.querySelector(`[data-tab="${next}"]`) as HTMLElement | null
+
+    window.scrollTo({ top: 0, behavior: 'auto' })
+
+    if (outgoing) {
+      gsap.to(outgoing, {
+        autoAlpha: 0,
+        y: -12,
+        duration: 0.25,
+        ease: 'power2.inOut',
+        onStart: () => {
+          outgoing.style.position = 'absolute'
+          outgoing.style.pointerEvents = 'none'
+        },
+      })
+    }
+
+    if (incoming) {
+      gsap.fromTo(
+        incoming,
+        { autoAlpha: 0, y: 16 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.4,
+          ease: 'power2.out',
+          delay: 0.1,
+          onStart: () => {
+            incoming.style.position = 'relative'
+            incoming.style.pointerEvents = 'auto'
+          },
+          onComplete: () => {
+            ScrollTrigger.refresh()
+          },
+        }
+      )
     }
   }, [activeTab])
 
   useEffect(() => {
+    const isTouchDevice = window.matchMedia('(hover: none)').matches
+    if (isTouchDevice) return
+
+    const ring = cursorRef.current
+    if (!ring) return
+
     const handleMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY })
+      ring.style.left = `${e.clientX}px`
+      ring.style.top = `${e.clientY}px`
     }
     const handleOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       if (target?.closest?.('.btn-glass') || target?.closest?.('.project-card') || target?.closest?.('.journey-card')) {
-        setCursorExpanded(true)
+        if (!cursorExpandedRef.current) {
+          cursorExpandedRef.current = true
+          ring.classList.add('expanded')
+        }
       }
     }
     const handleOut = (e: MouseEvent) => {
       const related = e.relatedTarget as HTMLElement
       if (!related?.closest?.('.btn-glass') && !related?.closest?.('.project-card') && !related?.closest?.('.journey-card')) {
-        setCursorExpanded(false)
+        if (cursorExpandedRef.current) {
+          cursorExpandedRef.current = false
+          ring.classList.remove('expanded')
+        }
       }
     }
-    document.addEventListener('mousemove', handleMove)
-    document.addEventListener('mouseover', handleOver)
-    document.addEventListener('mouseout', handleOut)
+    document.addEventListener('mousemove', handleMove, { passive: true })
+    document.addEventListener('mouseover', handleOver, { passive: true })
+    document.addEventListener('mouseout', handleOut, { passive: true })
     document.body.classList.add('custom-cursor')
     return () => {
       document.removeEventListener('mousemove', handleMove)
@@ -118,51 +170,40 @@ function App() {
 
   return (
     <>
-      <Scene
-        scrollProgressRef={scrollProgressRef}
-        morphProgressRef={morphProgressRef}
-        journeyGlowRef={journeyGlowRef}
-      />
-      <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
+      <a href="#main-content" className="skip-link">Skip to content</a>
+      <BackgroundMagnetField />
+      <Navbar activeTab={activeTab} onTabChange={handleTabChange} />
       <div
-        className={`cursor-ring ${cursorExpanded ? 'expanded' : ''}`}
-        style={{ left: cursorPos.x, top: cursorPos.y }}
+        ref={cursorRef}
+        className="cursor-ring"
         aria-hidden="true"
       />
-      <div ref={panelRef} className="tab-content">
+      <div ref={panelRef} id="main-content" className="tab-content">
         <div
           data-tab="home"
           className="tab-panel"
-          style={{
-            opacity: activeTab === 'home' ? 1 : 0,
-            pointerEvents: activeTab === 'home' ? 'auto' : 'none',
-          }}
         >
           <div className="tab-panel-inner">
-            <HomeView />
+            <HomeView onNavigate={handleTabChange} />
           </div>
         </div>
         <div
           data-tab="projects"
           className="tab-panel"
-          style={{
-            opacity: activeTab === 'projects' ? 1 : 0,
-            pointerEvents: activeTab === 'projects' ? 'auto' : 'none',
-          }}
         >
           <div className="tab-panel-inner">
             <section className="section section-compact">
-              <ProjectsSection data={experience.sections[2]} projects={experience.projects} />
+              <ProjectsSection
+                data={experience.sections[2]}
+                projects={experience.projects}
+                isActive={activeTab === 'projects'}
+              />
             </section>
           </div>
         </div>
         <div
           data-tab="journey"
           className="tab-panel"
-          style={{
-            opacity: activeTab === 'journey' ? 1 : 0,
-            pointerEvents: activeTab === 'journey' ? 'auto' : 'none',
-          }}
         >
           <div className="tab-panel-inner journey-section-wrapper">
             <JourneyResume />
@@ -171,15 +212,12 @@ function App() {
         <div
           data-tab="contact"
           className="tab-panel"
-          style={{
-            opacity: activeTab === 'contact' ? 1 : 0,
-            pointerEvents: activeTab === 'contact' ? 'auto' : 'none',
-          }}
         >
           <div className="tab-panel-inner">
             <section className="section section-compact">
               <ContactSection data={experience.sections[3]} contact={experience.contact} />
             </section>
+            <Footer />
           </div>
         </div>
       </div>
