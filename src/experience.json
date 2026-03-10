@@ -1,0 +1,74 @@
+{
+  "hero": {
+    "name": "Sambhav Lamichhane",
+    "tagline": "I build at the intersection of finance, data, and technology.",
+    "subline": "Finance · Product · Data · Builder",
+    "subSubline": "Senior at University of St. Thomas · Graduating May 2026 · From Kathmandu, Nepal"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "title": "",
+      "body": ""
+    },
+    {
+      "id": "about",
+      "title": "Where I'm Coming From",
+      "body": "I grew up in Kathmandu, Nepal, with the Himalayas as my backdrop and a family motorcycle dealership as my first business classroom. That ground-level education in how money actually moves shaped everything I've built since. I came to the US for college, won First-Year Class President in my first month knowing no one, and have spent the last three years building at the intersection of markets and technology — from algorithmic trading research to co-founding a fintech platform for unbanked workers to managing a fleet of 100+ VR headsets. I've bungee jumped off a 750-foot bridge in Nepal and walked an 80-year-old through sending her first email. Both were equally rewarding."
+    },
+    {
+      "id": "projects",
+      "title": "Selected Work",
+      "body": ""
+    },
+    {
+      "id": "contact",
+      "title": "Get in Touch",
+      "body": ""
+    }
+  ],
+  "about": {
+    "bullets": [
+      "First international student elected Class President at UST",
+      "$6,000 won across business competitions with Ruta'al",
+      "75+ backtests built as Quantitative Trading Researcher",
+      "250+ students served through VR Lab"
+    ],
+    "stats": [
+      { "value": "1st", "label": "International student Class President at UST" },
+      { "value": "$6,000", "label": "Won with Ruta'al" },
+      { "value": "75+", "label": "Backtests as Quant Researcher" },
+      { "value": "250+", "label": "Students through VR Lab" }
+    ]
+  },
+  "projects": [
+    {
+      "name": "Ruta'al — Financial Inclusion Platform",
+      "oneLiner": "Co-founded fintech for unbanked workers",
+      "description": "Co-founded a USSD-based fintech platform serving unbanked informal workers in Mexico and Nepal. Built the functional prototype, conducted TAM/SAM/SOM analysis, led investor pitches, and won $6,000 across business competitions.",
+      "link": "#",
+      "tags": ["Fintech", "Product Strategy", "Emerging Markets", "USSD"]
+    },
+    {
+      "name": "VibeTicker — Market Sentiment Dashboard",
+      "oneLiner": "Real-time sentiment vs. price data",
+      "description": "Real-time dashboard comparing AI-analyzed financial news sentiment with live equity, ETF, and crypto price data. Built with TypeScript and server-side API integration using Gemini.",
+      "link": "#",
+      "tags": ["Fintech", "AI", "TypeScript", "Real-time Data"]
+    },
+    {
+      "name": "CardSense — AI Credit Card Optimizer",
+      "oneLiner": "Full-stack rewards optimizer with Gemini",
+      "description": "Full-stack web app built with React, Cursor, and Gemini API. Analyzes transaction data to identify optimal card rewards and calculate annual opportunity costs across 15+ products. Deployed on Vercel.",
+      "link": "#",
+      "tags": ["AI", "React", "Gemini API", "Consumer Fintech"]
+    }
+  ],
+  "contact": {
+    "headline": "Open to roles in product, fintech, and AI. Graduating May 2026.",
+    "cta": "Let's connect",
+    "email": "mailto:lami9190@stthomas.edu",
+    "linkedin": "https://linkedin.com/in/sambhavlamichhane",
+    "resumeUrl": "https://resume-sambhav-lamichhane.tiiny.site"
+  }
+}
