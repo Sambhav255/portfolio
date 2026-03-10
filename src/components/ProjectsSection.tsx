@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SplitType from 'split-type'
 
 interface SectionData {
@@ -13,20 +12,28 @@ interface Project {
   oneLiner: string
   description: string
   link: string
+  prdUrl?: string
   tags: string[]
 }
 
 function ProjectCard({ p, featured }: { p: Project; featured?: boolean }) {
   return (
-    <a
-      href={p.link}
-      className={`project-card ${featured ? 'project-card-featured' : ''}`}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <h3>{p.name}</h3>
-      <p className="one-liner">{p.oneLiner}</p>
-      <p className="description">{p.description}</p>
+    <div className={`project-card magnetic-el ${featured ? 'project-card-featured' : ''}`}>
+      <a href={p.link} target="_blank" rel="noopener noreferrer" className="project-card-link">
+        <h3>{p.name}</h3>
+        <p className="one-liner">{p.oneLiner}</p>
+        <p className="description">{p.description}</p>
+      </a>
+      {p.prdUrl && (
+        <a
+          href={p.prdUrl}
+          className="btn-glass btn-prd magnetic-el"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View PRD
+        </a>
+      )}
       <div className="tags">
         {p.tags.map((tag) => (
           <span key={tag} className="tag">
@@ -34,7 +41,7 @@ function ProjectCard({ p, featured }: { p: Project; featured?: boolean }) {
           </span>
         ))}
       </div>
-    </a>
+    </div>
   )
 }
 
@@ -51,7 +58,6 @@ export function ProjectsSection({
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
     const titleEl = titleRef.current
     const bodyEl = bodyRef.current
     const cardsEl = cardsRef.current
@@ -59,53 +65,18 @@ export function ProjectsSection({
 
     const titleSplit = new SplitType(titleEl, { types: 'chars' })
     gsap.set(titleSplit.chars, { opacity: 0, y: 20 })
-    gsap.to(titleSplit.chars, {
-      opacity: 1,
-      y: 0,
-      stagger: 0.02,
-      scrollTrigger: {
-        trigger: titleEl.closest('.section'),
-        start: 'top 70%',
-        scrub: 0.5,
-      },
-    })
+    const tl = gsap.timeline({ delay: 0.1 })
+    tl.to(titleSplit.chars, { opacity: 1, y: 0, stagger: 0.02, duration: 0.5 })
     if (bodyEl && data.body) {
-      gsap.fromTo(
-        bodyEl,
-        { opacity: 0, y: 12 },
-        {
-          opacity: 1,
-          y: 0,
-          scrollTrigger: {
-            trigger: bodyEl.closest('.section'),
-            start: 'top 62%',
-            scrub: 0.5,
-          },
-        }
-      )
+      gsap.set(bodyEl, { opacity: 0, y: 12 })
+      tl.to(bodyEl, { opacity: 1, y: 0, duration: 0.4 }, '-=0.3')
     }
     if (cardsEl) {
-      gsap.fromTo(
-        cardsEl.children,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.15,
-          duration: 0.5,
-          scrollTrigger: {
-            trigger: cardsEl,
-            start: 'top 85%',
-            scrub: 0.4,
-          },
-        }
-      )
+      gsap.set(cardsEl.children, { opacity: 0, y: 24 })
+      tl.to(cardsEl.children, { opacity: 1, y: 0, stagger: 0.1, duration: 0.5 }, '-=0.2')
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger && sectionRef.current?.contains(t.trigger)) t.kill()
-      })
       titleSplit.revert()
     }
   }, [data, projects])

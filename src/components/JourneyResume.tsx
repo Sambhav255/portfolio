@@ -1,88 +1,44 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import experience from '../experience.json'
 
-const MILESTONES = [
-  {
-    date: '19 Years',
-    title: 'Kathmandu',
-    impact: 'Born and raised with the Himalayas as a backdrop',
-    lesson: 'Roots shape perspective—authenticity starts at home.',
-  },
-  {
-    date: 'Age 13',
-    title: 'Family Dealership',
-    impact: 'Ground-level education in financial operations at Bajaj showroom',
-    lesson: 'Understand the unit economics before scaling.',
-  },
-  {
-    date: 'Aug 2022',
-    title: 'The Move',
-    impact: 'Relocated to the US for college at University of St. Thomas',
-    lesson: 'Adaptation is the first step to impact.',
-  },
-  {
-    date: 'Aug 2022',
-    title: 'Yardstick Election',
-    impact: 'Elected 1st international student Class President (1,600 constituents)',
-    lesson: 'Build trust by showing up when no one knows your name.',
-  },
-  {
-    date: 'Mar 2023',
-    title: 'VR Product Developer',
-    impact: 'Led STELAR VR Lab initiatives for 250+ students',
-    lesson: 'Scaling impact through documentation and repeatable workflows.',
-  },
-  {
-    date: 'Nov 2023',
-    title: 'Wilt & Water',
-    impact: 'Won $1,500 at Fowler Business Concept Challenge',
-    lesson: 'Sustainability ventures need clear unit economics.',
-  },
-  {
-    date: 'Spring 2024',
-    title: 'London Study Abroad',
-    impact: 'Designed scalable literacy guides for 75+ users at Kilburn Library',
-    lesson: 'Scaling impact through documentation.',
-  },
-  {
-    date: 'Jun 2024 – Jun 2025',
-    title: 'Quant Research',
-    impact: 'Developed trading APIs and 75+ backtests at CAM',
-    lesson: 'Data-driven decisions beat intuition at scale.',
-  },
-  {
-    date: 'Aug 2025',
-    title: 'LEAF Lab PM Fellow',
-    impact: 'Managing product backlogs and sprint planning for AI EdTech',
-    lesson: 'Prioritization is the core PM skill.',
-  },
-  {
-    date: 'Fall 2025',
-    title: 'Perplexity Strategist',
-    impact: 'Selected for Campus Strategist Program for AI adoption',
-    lesson: 'Iterate messaging for different audiences.',
-  },
-  {
-    date: 'Oct 2025',
-    title: "Ruta'al Launch",
-    impact: 'Won $6,000 for USSD fintech serving unbanked workers',
-    lesson: 'Financial inclusion starts with understanding the unbanked.',
-  },
-]
+interface JourneyMilestone {
+  date: string
+  title: string
+  impact: string
+  lesson: string
+}
 
-// Winding vertical path — viewBox 0 0 120 1100
+const MILESTONES = (experience as { journey?: JourneyMilestone[] }).journey ?? []
+
+// Winding vertical path — viewBox 0 0 120 900, 8 milestones
 const TRAIL_PATH =
-  'M 60 20 C 90 80 30 160 60 220 C 30 280 90 360 60 420 C 90 480 30 560 60 620 C 30 680 90 760 60 820 C 90 880 30 960 60 1020 C 30 1080 60 1100'
+  'M 60 20 C 90 70 30 140 60 200 C 30 260 90 320 60 380 C 90 440 30 500 60 560 C 30 620 90 680 60 740 C 90 800 30 860 60 900'
 
-export function JourneyResume({ onVisibilityChange }: { onVisibilityChange?: (visible: boolean) => void }) {
+export function JourneyResume() {
   const sectionRef = useRef<HTMLElement>(null)
   const pathRef = useRef<SVGPathElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [nodePositions, setNodePositions] = useState<Array<{ x: number; y: number }>>([])
 
   useEffect(() => {
+    if (MILESTONES.length === 0) return
+    // #region agent log
+    fetch('http://127.0.0.1:7245/ingest/3952a87a-600c-469a-8b44-53ba21afdd5b', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        runId: 'initial',
+        hypothesisId: 'H3',
+        location: 'src/components/JourneyResume.tsx:26',
+        message: 'JourneyResume init',
+        data: { milestones: MILESTONES.length },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {})
+    // #endregion agent log
     gsap.registerPlugin(ScrollTrigger)
     const path = pathRef.current
     const section = sectionRef.current
@@ -121,31 +77,20 @@ export function JourneyResume({ onVisibilityChange }: { onVisibilityChange?: (vi
           const card = cardRefs.current[i]
           if (!card) return
           const nodeT = i / Math.max(1, MILESTONES.length - 1)
-          const cardProgress = Math.min(1, Math.max(0, (progress - nodeT * 0.9) / 0.12))
+          const cardProgress = Math.min(1, Math.max(0, (progress - nodeT * 0.9) / 0.15))
           gsap.set(card, { opacity: cardProgress, y: 20 * (1 - cardProgress) })
         })
       },
     })
 
-    const visibilityTrigger = ScrollTrigger.create({
-      trigger: section,
-      start: 'top 70%',
-      end: 'bottom 30%',
-      onEnter: () => onVisibilityChange?.(true),
-      onLeaveBack: () => onVisibilityChange?.(false),
-      onLeave: () => onVisibilityChange?.(false),
-      onEnterBack: () => onVisibilityChange?.(true),
-    })
-
     return () => {
       pathDraw.kill()
       ticker.kill()
-      visibilityTrigger.kill()
       ScrollTrigger.getAll().forEach((t) => {
         if (t.trigger === section) t.kill()
       })
     }
-  }, [onVisibilityChange])
+  }, [])
 
   useEffect(() => {
     MILESTONES.forEach((_, i) => {
@@ -154,14 +99,16 @@ export function JourneyResume({ onVisibilityChange }: { onVisibilityChange?: (vi
     })
   }, [])
 
+  if (MILESTONES.length === 0) return null
+
   return (
     <section ref={sectionRef} className="journey-section" data-section="journey">
       <h2 className="journey-title">JOURNEY</h2>
-      <div className="journey-inner">
+      <div className="journey-inner" style={{ gridTemplateRows: `repeat(${MILESTONES.length}, minmax(140px, 1fr))` }}>
         <div className="journey-trail-wrap">
           <svg
             className="journey-svg"
-            viewBox="0 0 120 1100"
+            viewBox="0 0 120 900"
             preserveAspectRatio="xMidYMin meet"
           >
             <path
@@ -176,14 +123,19 @@ export function JourneyResume({ onVisibilityChange }: { onVisibilityChange?: (vi
             />
             {nodePositions.length > 0 &&
               MILESTONES.map((_, i) => (
-                <g key={i} transform={`translate(${nodePositions[i]?.x ?? 60}, ${nodePositions[i]?.y ?? 0})`}>
-                  <circle
-                    className="journey-node"
-                    r="6"
-                    fill="#1A1A2E"
-                    onMouseEnter={() => setExpandedIndex(i)}
-                    onMouseLeave={() => setExpandedIndex(null)}
-                  />
+                <g
+                  key={i}
+                  transform={`translate(${nodePositions[i]?.x ?? 60}, ${nodePositions[i]?.y ?? 0})`}
+                  onMouseEnter={() => setHoveredIndex(i)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
+                  <circle className="journey-node" r="6" fill="#1A1A2E" />
+                  {hoveredIndex === i && (
+                    <g className="journey-node-plus">
+                      <line x1="-3" y1="0" x2="3" y2="0" stroke="#F7F6F3" strokeWidth="1" strokeLinecap="round" />
+                      <line x1="0" y1="-3" x2="0" y2="3" stroke="#F7F6F3" strokeWidth="1" strokeLinecap="round" />
+                    </g>
+                  )}
                 </g>
               ))}
           </svg>
@@ -195,15 +147,17 @@ export function JourneyResume({ onVisibilityChange }: { onVisibilityChange?: (vi
               ref={(el) => {
                 cardRefs.current[i] = el
               }}
-              className={`journey-card glass ${i % 2 === 0 ? 'journey-card-left' : 'journey-card-right'} ${expandedIndex === i ? 'journey-card-expanded' : ''}`}
-              onMouseEnter={() => setExpandedIndex(i)}
-              onMouseLeave={() => setExpandedIndex(null)}
+              className={`journey-card glass ${i % 2 === 0 ? 'journey-card-left' : 'journey-card-right'} ${hoveredIndex === i ? 'journey-card-expanded' : ''}`}
+              onMouseEnter={() => setHoveredIndex(i)}
+              onMouseLeave={() => setHoveredIndex(null)}
             >
               <div className="journey-card-date">{m.date}</div>
               <h3 className="journey-card-title">{m.title}</h3>
               <p className="journey-card-impact">{m.impact}</p>
-              {expandedIndex === i && (
-                <p className="journey-card-lesson">{m.lesson}</p>
+              {hoveredIndex === i && (
+                <p className="journey-card-lesson">
+                  <strong>Product Lesson:</strong> {m.lesson}
+                </p>
               )}
             </div>
           ))}

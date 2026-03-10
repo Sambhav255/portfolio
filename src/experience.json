@@ -41,6 +41,56 @@
       { "value": "250+", "label": "Students through VR Lab" }
     ]
   },
+  "journey": [
+    {
+      "date": "19 Years",
+      "title": "Kathmandu Roots",
+      "impact": "Built a foundation of scrappy problem-solving and high agency in the 'Himalayan classroom'.",
+      "lesson": "Ambiguity is an opportunity to build from scratch."
+    },
+    {
+      "date": "Age 13",
+      "title": "Family Dealership",
+      "impact": "Ground-level education in financial operations at a Bajaj motorcycle showroom; reduced discrepancies by 15% through enhanced controls.",
+      "lesson": "Understanding the customer at the ground level is the only way to build systemic solutions."
+    },
+    {
+      "date": "Aug 2022",
+      "title": "Yardstick Election",
+      "impact": "Navigated extreme ambiguity in a new country to win 1,600+ constituents via a high-touch grassroots 'GTM' strategy.",
+      "lesson": "Trust is built through one-on-one engagement, not just broad signals."
+    },
+    {
+      "date": "Mar 2023 – Present",
+      "title": "VR Lab",
+      "impact": "Translating qualitative user research from 250+ students into a strategic technology roadmap for campus-wide adoption.",
+      "lesson": "Hardware is a bottleneck; software onboarding must be frictionless to scale."
+    },
+    {
+      "date": "Spring 2024",
+      "title": "London Digital Literacy",
+      "impact": "Identified systemic gaps in literacy; designed and shipped permanent, scalable instructional frameworks for 75+ users to ensure lasting impact.",
+      "lesson": "A solution isn't successful unless it works when you aren't there."
+    },
+    {
+      "date": "Jun 2024 – Jun 2025",
+      "title": "Quant Research",
+      "impact": "Applied hypothesis-driven experimentation across 75+ backtests, establishing a scalable API framework that drove a 12% portfolio return.",
+      "lesson": "Data rigor validates intuition; automation scales it."
+    },
+    {
+      "date": "Aug 2025",
+      "title": "LEAF Lab",
+      "impact": "Managing product backlogs and sprint planning for AI-powered features; synthesizing insights into prioritized roadmaps aligned with business OKRs.",
+      "lesson": "Agile success is about clear acceptance criteria and cross-functional alignment."
+    },
+    {
+      "date": "Oct 2025",
+      "title": "Ruta'al",
+      "impact": "Co-founded a USSD fintech for unbanked workers; secured $6,000 in seed funding by demonstrating product-market fit across two emerging markets.",
+      "lesson": "Solve for 'Zero Trust' before you solve for the technology."
+    }
+  ],
   "projects": [
     {
       "name": "Ruta'al — Financial Inclusion Platform",
@@ -54,6 +104,7 @@
       "oneLiner": "Real-time sentiment vs. price data",
       "description": "Real-time dashboard comparing AI-analyzed financial news sentiment with live equity, ETF, and crypto price data. Built with TypeScript and server-side API integration using Gemini.",
       "link": "#",
+      "prdUrl": "#",
       "tags": ["Fintech", "AI", "TypeScript", "Real-time Data"]
     },
     {

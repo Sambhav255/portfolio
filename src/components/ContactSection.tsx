@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SplitType from 'split-type'
 
 interface SectionData {
@@ -28,7 +27,6 @@ export function ContactSection({
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
     const headlineEl = headlineRef.current
     const subEl = subRef.current
     if (!headlineEl || !subEl) return
@@ -36,22 +34,11 @@ export function ContactSection({
     const headlineSplit = new SplitType(headlineEl, { types: 'chars' })
     gsap.set(headlineSplit.chars, { opacity: 0, y: 16 })
     gsap.set(subEl, { opacity: 0, y: 12 })
-    gsap.to(headlineSplit.chars, {
-      opacity: 1,
-      y: 0,
-      stagger: 0.02,
-      scrollTrigger: { trigger: headlineEl.closest('.section'), start: 'top 70%', scrub: 0.5 },
-    })
-    gsap.to(subEl, {
-      opacity: 1,
-      y: 0,
-      scrollTrigger: { trigger: subEl.closest('.section'), start: 'top 65%', scrub: 0.5 },
-    })
+    const tl = gsap.timeline({ delay: 0.1 })
+    tl.to(headlineSplit.chars, { opacity: 1, y: 0, stagger: 0.02, duration: 0.5 })
+    tl.to(subEl, { opacity: 1, y: 0, duration: 0.4 }, '-=0.3')
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger && sectionRef.current?.contains(t.trigger)) t.kill()
-      })
       headlineSplit.revert()
     }
   }, [contact.headline])
@@ -65,14 +52,14 @@ export function ContactSection({
         {contact.headline}
       </p>
       <div className="contact-buttons">
-        <a href={contact.email.startsWith('mailto:') ? contact.email : `mailto:${contact.email}`} className="btn-glass">
+        <a href={contact.email.startsWith('mailto:') ? contact.email : `mailto:${contact.email}`} className="btn-glass magnetic-el">
           {contact.cta}
         </a>
-        <a href={contact.linkedin} className="btn-glass" target="_blank" rel="noopener noreferrer">
+        <a href={contact.linkedin} className="btn-glass magnetic-el" target="_blank" rel="noopener noreferrer">
           LinkedIn
         </a>
         {contact.resumeUrl && contact.resumeUrl !== '#' && (
-          <a href={contact.resumeUrl} className="btn-glass" target="_blank" rel="noopener noreferrer">
+          <a href={contact.resumeUrl} className="btn-glass magnetic-el" target="_blank" rel="noopener noreferrer">
             Resume
           </a>
         )}

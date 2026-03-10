@@ -1,6 +1,8 @@
 import { useRef } from 'react'
-import { Canvas, useThree, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
+import { EffectComposer, ChromaticAberration } from '@react-three/postprocessing'
+import { BlendFunction } from 'postprocessing'
 import { CameraRig } from './CameraRig'
 import { FloatingDots } from './FloatingDots'
 
@@ -63,6 +65,12 @@ export function Scene({ scrollProgressRef, morphProgressRef, journeyGlowRef }: S
           mouseRef={mouseRef}
           journeyGlowRef={journeyGlowRef}
         />
+        <EffectComposer>
+          <ChromaticAberration
+            blendFunction={BlendFunction.NORMAL}
+            offset={[0.0015, 0.0015]}
+          />
+        </EffectComposer>
       </Canvas>
     </div>
   )

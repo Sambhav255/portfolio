@@ -25,19 +25,11 @@ export function HeroSection({ data }: { data: HeroData }) {
     gsap.set(nameSplit.words, { opacity: 0, y: 24 })
     gsap.set(taglineSplit.chars, { opacity: 0, y: 12 })
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: nameEl.closest('.section'),
-        start: 'top 50%',
-        end: 'top top',
-        scrub: 0.8,
-      },
-    })
-    tl.to(nameSplit.words, { opacity: 1, y: 0, stagger: 0.12, duration: 1.2 })
-    tl.to(taglineSplit.chars, { opacity: 1, y: 0, stagger: 0.015, duration: 0.8 }, '-=0.5')
+    const tl = gsap.timeline({ delay: 0.2 })
+    tl.to(nameSplit.words, { opacity: 1, y: 0, stagger: 0.12, duration: 1 })
+    tl.to(taglineSplit.chars, { opacity: 1, y: 0, stagger: 0.012, duration: 0.6 }, '-=0.4')
 
     return () => {
-      if (tl.scrollTrigger) tl.scrollTrigger.kill()
       nameSplit.revert()
       taglineSplit.revert()
     }

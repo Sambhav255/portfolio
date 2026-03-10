@@ -1,63 +1,92 @@
 import { useRef, useEffect, useState } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLenis } from './hooks/useLenis'
+import { useMagnetic } from './hooks/useMagnetic'
 import { Scene } from './components/Scene'
-import { HeroSection } from './components/HeroSection'
-import { FinanceVRSection } from './components/FinanceVRSection'
+import { Navbar, TabId } from './components/Navbar'
+import { HomeView } from './components/HomeView'
 import { ProjectsSection } from './components/ProjectsSection'
 import { JourneyResume } from './components/JourneyResume'
 import { ContactSection } from './components/ContactSection'
 import experience from './experience.json'
 import './index.css'
 
-gsap.registerPlugin(ScrollTrigger)
-
 function App() {
   useLenis()
+  useMagnetic()
   const scrollProgressRef = useRef(0)
   const morphProgressRef = useRef(0)
   const journeyGlowRef = useRef(0)
+  const [activeTab, setActiveTab] = useState<TabId>('home')
   const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 })
   const [cursorExpanded, setCursorExpanded] = useState(false)
-  const cursorRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const prevTabRef = useRef<TabId>('home')
+
+  const TAB_PROGRESS: Record<TabId, number> = {
+    home: 0,
+    projects: 0.4,
+    journey: 0.6,
+    contact: 0.9,
+  }
 
   useEffect(() => {
-    const aboutSection = document.querySelector('[data-section="1"]')
-    const projectsSection = document.querySelector('[data-section="2"]')
-
-    const aboutTrigger =
-      aboutSection &&
-      ScrollTrigger.create({
-        trigger: aboutSection,
-        start: 'top center',
-        end: 'bottom center',
-      })
-    const projectsTrigger =
-      projectsSection &&
-      ScrollTrigger.create({
-        trigger: projectsSection,
-        start: 'top center',
-        end: 'bottom center',
-      })
-
-    const st = ScrollTrigger.create({
-      start: 0,
-      end: 'max',
-      onUpdate: (self) => {
-        scrollProgressRef.current = self.progress
-        const ap = aboutTrigger?.progress ?? 0
-        const pp = projectsTrigger?.progress ?? 0
-        morphProgressRef.current = pp > 0.01 ? 1 - pp : ap
-      },
-    })
-
-    return () => {
-      aboutTrigger?.kill()
-      projectsTrigger?.kill()
-      st.kill()
-    }
+    // #region agent log
+    fetch('http://127.0.0.1:7245/ingest/3952a87a-600c-469a-8b44-53ba21afdd5b', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        runId: 'initial',
+        hypothesisId: 'H0',
+        location: 'src/App.tsx:32',
+        message: 'App mounted',
+        data: {},
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {})
+    // #endregion agent log
   }, [])
+
+  useEffect(() => {
+    morphProgressRef.current = activeTab === 'journey' ? 1 : 0
+    journeyGlowRef.current = activeTab === 'journey' ? 1 : 0
+    scrollProgressRef.current = TAB_PROGRESS[activeTab]
+    // #region agent log
+    fetch('http://127.0.0.1:7245/ingest/3952a87a-600c-469a-8b44-53ba21afdd5b', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        runId: 'initial',
+        hypothesisId: 'H1',
+        location: 'src/App.tsx:33',
+        message: 'activeTab changed',
+        data: { activeTab, tabProgress: TAB_PROGRESS[activeTab] },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {})
+    // #endregion agent log
+  }, [activeTab])
+
+  useEffect(() => {
+    // #region agent log
+    const badge = document.getElementById('__bootbadge')
+    if (badge) badge.textContent = 'REACT: App mounted'
+    // #endregion agent log
+  }, [])
+
+  useEffect(() => {
+    const prev = prevTabRef.current
+    const next = activeTab
+    prevTabRef.current = next
+    const outgoing = panelRef.current?.querySelector(`[data-tab="${prev}"]`) as HTMLElement
+    const incoming = panelRef.current?.querySelector(`[data-tab="${next}"]`) as HTMLElement
+    if (prev !== next) {
+      if (outgoing) gsap.to(outgoing, { opacity: 0, duration: 0.2, ease: 'power2.in' })
+      if (incoming) gsap.fromTo(incoming, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out', delay: 0.05 })
+    } else if (incoming) {
+      gsap.set(incoming, { opacity: 1 })
+    }
+  }, [activeTab])
 
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
@@ -89,37 +118,70 @@ function App() {
 
   return (
     <>
-      <Scene scrollProgressRef={scrollProgressRef} morphProgressRef={morphProgressRef} journeyGlowRef={journeyGlowRef} />
+      <Scene
+        scrollProgressRef={scrollProgressRef}
+        morphProgressRef={morphProgressRef}
+        journeyGlowRef={journeyGlowRef}
+      />
+      <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
       <div
-        ref={cursorRef}
         className={`cursor-ring ${cursorExpanded ? 'expanded' : ''}`}
         style={{ left: cursorPos.x, top: cursorPos.y }}
         aria-hidden="true"
       />
-      <div style={{ position: 'relative', zIndex: 2 }}>
-        <section className="section" data-section="0">
-          <HeroSection data={experience.hero} />
-        </section>
-        <hr className="section-divider" />
-        <section className="section" data-section="1">
-          <FinanceVRSection data={experience.sections[1]} about={experience.about} />
-        </section>
-        <hr className="section-divider" />
-        <section className="section journey-section-wrapper" data-section="journey">
-          <JourneyResume
-            onVisibilityChange={(visible) => {
-              journeyGlowRef.current = visible ? 1 : 0
-            }}
-          />
-        </section>
-        <hr className="section-divider" />
-        <section className="section" data-section="2">
-          <ProjectsSection data={experience.sections[2]} projects={experience.projects} />
-        </section>
-        <hr className="section-divider" />
-        <section className="section" data-section="3">
-          <ContactSection data={experience.sections[3]} contact={experience.contact} />
-        </section>
+      <div ref={panelRef} className="tab-content">
+        <div
+          data-tab="home"
+          className="tab-panel"
+          style={{
+            opacity: activeTab === 'home' ? 1 : 0,
+            pointerEvents: activeTab === 'home' ? 'auto' : 'none',
+          }}
+        >
+          <div className="tab-panel-inner">
+            <HomeView />
+          </div>
+        </div>
+        <div
+          data-tab="projects"
+          className="tab-panel"
+          style={{
+            opacity: activeTab === 'projects' ? 1 : 0,
+            pointerEvents: activeTab === 'projects' ? 'auto' : 'none',
+          }}
+        >
+          <div className="tab-panel-inner">
+            <section className="section section-compact">
+              <ProjectsSection data={experience.sections[2]} projects={experience.projects} />
+            </section>
+          </div>
+        </div>
+        <div
+          data-tab="journey"
+          className="tab-panel"
+          style={{
+            opacity: activeTab === 'journey' ? 1 : 0,
+            pointerEvents: activeTab === 'journey' ? 'auto' : 'none',
+          }}
+        >
+          <div className="tab-panel-inner journey-section-wrapper">
+            <JourneyResume />
+          </div>
+        </div>
+        <div
+          data-tab="contact"
+          className="tab-panel"
+          style={{
+            opacity: activeTab === 'contact' ? 1 : 0,
+            pointerEvents: activeTab === 'contact' ? 'auto' : 'none',
+          }}
+        >
+          <div className="tab-panel-inner">
+            <section className="section section-compact">
+              <ContactSection data={experience.sections[3]} contact={experience.contact} />
+            </section>
+          </div>
+        </div>
       </div>
       <div className="grain" aria-hidden="true" />
     </>
