@@ -20,9 +20,9 @@ export function HeroSection({ data }: { data: HeroData }) {
     const taglineEl = taglineRef.current
     if (!nameEl || !taglineEl) return
 
-    const nameSplit = new SplitType(nameEl, { types: 'chars' })
+    const nameSplit = new SplitType(nameEl, { types: 'words' })
     const taglineSplit = new SplitType(taglineEl, { types: 'chars' })
-    gsap.set(nameSplit.chars, { opacity: 0, y: 24 })
+    gsap.set(nameSplit.words, { opacity: 0, y: 24 })
     gsap.set(taglineSplit.chars, { opacity: 0, y: 12 })
 
     const tl = gsap.timeline({
@@ -33,7 +33,7 @@ export function HeroSection({ data }: { data: HeroData }) {
         scrub: 0.8,
       },
     })
-    tl.to(nameSplit.chars, { opacity: 1, y: 0, stagger: 0.04, duration: 1.2 })
+    tl.to(nameSplit.words, { opacity: 1, y: 0, stagger: 0.12, duration: 1.2 })
     tl.to(taglineSplit.chars, { opacity: 1, y: 0, stagger: 0.015, duration: 0.8 }, '-=0.5')
 
     return () => {
