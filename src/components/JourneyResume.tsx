@@ -5,6 +5,7 @@ interface JourneyMilestone {
   title: string
   impact: string
   lesson: string
+  isImportant?: boolean
 }
 
 const MILESTONES = (experience as { journey?: JourneyMilestone[] }).journey ?? []
@@ -17,17 +18,17 @@ export function JourneyResume() {
       <div className="journey-header">
         <h2 className="journey-title">My Journey</h2>
         <p className="journey-subtitle">
-          From Kathmandu to Minnesota — and everything built along the way.
+          From Kathmandu to Minnesota, and everything built along the way.
         </p>
       </div>
       <div className="journey-inner">
         {MILESTONES.map((m, index) => {
           const isLeft = index % 2 === 0
-          const isImportant =
-            m.title === 'Crossing an ocean' || m.title === "Ruta'al and what's next"
+          const isImportant = m.isImportant === true
+          const isLast = index === MILESTONES.length - 1
 
           const card = (
-            <div className={`journey-card glass ${isImportant ? 'journey-card-important' : ''}`}>
+            <div className={`journey-card glass ${isImportant ? 'journey-card-important' : ''} ${isLast ? 'journey-card-current' : ''}`}>
               <div className="journey-card-date">{m.date}</div>
               <h3 className="journey-card-title">{m.title}</h3>
               <p className="journey-card-impact">{m.impact}</p>

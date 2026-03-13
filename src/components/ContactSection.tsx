@@ -13,6 +13,11 @@ interface ContactData {
   email: string
   linkedin: string
   resumeUrl: string
+  basedIn?: string
+  relocation?: string
+  available?: string
+  currently?: string
+  openTo?: string
 }
 
 export function ContactSection({
@@ -50,7 +55,7 @@ export function ContactSection({
         Currently open to product &amp; data roles.
       </div>
       <h2 ref={headlineRef} className="contact-headline">
-        Let's build something.
+        Let&apos;s build something.
       </h2>
       <p ref={subRef} className="contact-sub">
         {contact.headline}
@@ -58,18 +63,51 @@ export function ContactSection({
       <p className="contact-response">Response time: usually within 24 hours.</p>
       <p className="contact-email-text">{emailAddr}</p>
       <div className="contact-buttons">
-        <a href={contact.email.startsWith('mailto:') ? contact.email : `mailto:${contact.email}`} className="btn-glass magnetic-el">
+        <a href={contact.email.startsWith('mailto:') ? contact.email : `mailto:${contact.email}`} className="btn-contact-primary magnetic-el">
           {contact.cta}
         </a>
-        <a href={contact.linkedin} className="btn-glass magnetic-el" target="_blank" rel="noopener noreferrer">
+        <a href={contact.linkedin} className="btn-contact-secondary magnetic-el" target="_blank" rel="noopener noreferrer">
           LinkedIn
         </a>
         {contact.resumeUrl && contact.resumeUrl !== '#' && (
-          <a href={contact.resumeUrl} className="btn-glass magnetic-el" target="_blank" rel="noopener noreferrer">
+          <a href={contact.resumeUrl} className="btn-contact-secondary magnetic-el" target="_blank" rel="noopener noreferrer">
             Resume
           </a>
         )}
       </div>
+      {(contact.basedIn || contact.relocation || contact.available || contact.currently || contact.openTo) && (
+        <div className="contact-info-strip">
+          <div className="contact-info-col">
+            {(contact.basedIn || contact.relocation) && (
+              <div className="contact-info-item">
+                <div className="contact-info-label">BASED IN</div>
+                {contact.basedIn && <div className="contact-info-value">{contact.basedIn}</div>}
+                {contact.relocation && <div className="contact-info-value contact-info-value-relocation">{contact.relocation}</div>}
+              </div>
+            )}
+            {contact.available && (
+              <div className="contact-info-item">
+                <div className="contact-info-label">AVAILABLE</div>
+                <div className="contact-info-value">{contact.available}</div>
+              </div>
+            )}
+          </div>
+          <div className="contact-info-col">
+            {contact.currently && (
+              <div className="contact-info-item">
+                <div className="contact-info-label">CURRENTLY</div>
+                <div className="contact-info-value">{contact.currently}</div>
+              </div>
+            )}
+            {contact.openTo && (
+              <div className="contact-info-item">
+                <div className="contact-info-label">OPEN TO</div>
+                <div className="contact-info-value">{contact.openTo}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

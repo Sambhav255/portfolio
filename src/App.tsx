@@ -134,9 +134,12 @@ function App() {
     const ring = cursorRef.current
     if (!ring) return
 
+    const setLeft = gsap.quickSetter(ring, 'left', 'px')
+    const setTop = gsap.quickSetter(ring, 'top', 'px')
+
     const handleMove = (e: MouseEvent) => {
-      ring.style.left = `${e.clientX}px`
-      ring.style.top = `${e.clientY}px`
+      setLeft(e.clientX)
+      setTop(e.clientY)
     }
     const handleOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement
@@ -185,6 +188,7 @@ function App() {
         >
           <div className="tab-panel-inner">
             <HomeView onNavigate={handleTabChange} />
+            <Footer />
           </div>
         </div>
         <div
@@ -199,6 +203,7 @@ function App() {
                 isActive={activeTab === 'projects'}
               />
             </section>
+            <Footer />
           </div>
         </div>
         <div
@@ -207,14 +212,15 @@ function App() {
         >
           <div className="tab-panel-inner journey-section-wrapper">
             <JourneyResume />
+            <Footer />
           </div>
         </div>
         <div
           data-tab="contact"
           className="tab-panel"
         >
-          <div className="tab-panel-inner">
-            <section className="section section-compact">
+          <div className="tab-panel-inner tab-panel-inner-contact">
+            <section className="section section-compact section-contact">
               <ContactSection data={experience.sections[3]} contact={experience.contact} />
             </section>
             <Footer />

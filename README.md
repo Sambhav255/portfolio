@@ -23,6 +23,10 @@ Open [http://localhost:5173](http://localhost:5173).
 
 Edit **`src/experience.json`** for hero text, section copy, projects, and contact (email, LinkedIn, resume URL).
 
+## Social preview (optional)
+
+Add **`public/og-image.png`** (1200×630 px) for link previews on LinkedIn, iMessage, etc. If missing, shares will fall back to your meta description without an image.
+
 ## Build
 
 ```bash

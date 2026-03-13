@@ -11,6 +11,7 @@ export interface ProjectDetails {
   pitchDeckUrl?: string
   results?: string[]
   why?: string
+  doDifferently?: string
 }
 
 export function ProjectModal({
@@ -153,6 +154,13 @@ export function ProjectModal({
                   <li key={i}>{r}</li>
                 ))}
               </ul>
+            </div>
+          )}
+
+          {project.doDifferently && (
+            <div className="modal-section">
+              <div className="modal-section-title">What I&apos;d do differently</div>
+              <div className="modal-text">{project.doDifferently}</div>
             </div>
           )}
 

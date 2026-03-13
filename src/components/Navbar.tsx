@@ -26,7 +26,6 @@ export function Navbar({ activeTab, onTabChange }: NavbarProps) {
       if (!el) return
       const isActive = activeTab === id
       gsap.to(el, {
-        opacity: isActive ? 1 : 0.55,
         fontWeight: isActive ? 600 : 400,
         duration: 0.25,
         ease: 'power2.out',

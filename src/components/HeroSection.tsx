@@ -11,7 +11,12 @@ interface HeroData {
   subSubline?: string
 }
 
-export function HeroSection({ data }: { data: HeroData }) {
+interface HeroSectionProps {
+  data: HeroData
+  onViewProjects?: () => void
+}
+
+export function HeroSection({ data, onViewProjects }: HeroSectionProps) {
   const nameRef = useRef<HTMLHeadingElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
   const [imgError, setImgError] = useState(false)
@@ -58,6 +63,13 @@ export function HeroSection({ data }: { data: HeroData }) {
             </div>
           )}
           {data.subSubline && <p className="hero-sub-subline">{data.subSubline}</p>}
+          {onViewProjects && (
+            <div className="hero-cta-wrap">
+              <button type="button" className="btn-hero-cta magnetic-el" onClick={onViewProjects}>
+                View My Work
+              </button>
+            </div>
+          )}
         </div>
         <div className="hero-portrait-wrap">
           <div className="hero-portrait-ring">
