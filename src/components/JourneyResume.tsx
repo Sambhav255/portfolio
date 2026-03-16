@@ -30,7 +30,12 @@ export function JourneyResume() {
           const card = (
             <div className={`journey-card glass ${isImportant ? 'journey-card-important' : ''} ${isLast ? 'journey-card-current' : ''}`}>
               <div className="journey-card-date">{m.date}</div>
-              <h3 className="journey-card-title">{m.title}</h3>
+              <div className="journey-card-title-row">
+                <h3 className="journey-card-title">{m.title}</h3>
+                {m.title.includes("Ruta'al") && (
+                  <img src="/rutaal-logo.png" alt="Ruta'al logo" className="journey-logo" />
+                )}
+              </div>
               <p className="journey-card-impact">{m.impact}</p>
             </div>
           )

@@ -92,6 +92,7 @@
       "description": "Co-founded a USSD-based fintech platform serving unbanked informal workers in Mexico and Nepal. Built the functional prototype, conducted TAM/SAM/SOM analysis, led investor pitches, and won $6,000 across business competitions.",
       "featured": true,
       "flagship": true,
+      "logo": "/rutaal-logo.png",
       "projectContext": "USSD-based fintech · Mexico & Nepal · $6,000 won · Functional prototype built",
       "detailedDescription": [
         "<strong>The problem:</strong> 250 million informal workers in Mexico and Nepal operate entirely outside the formal financial system. No credit score. No bank account. No safety net.",
@@ -166,7 +167,7 @@
     }
   ],
   "contact": {
-    "headline": "Open to roles in product, fintech, and AI. Graduating May 2026.",
+    "headline": "Open to roles in product, fintech, data, and AI. Graduating May 2026.",
     "cta": "Let's connect",
     "email": "mailto:lami9190@stthomas.edu",
     "linkedin": "https://linkedin.com/in/sambhavlamichhane",

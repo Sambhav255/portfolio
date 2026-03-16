@@ -45,7 +45,7 @@ export function HeroSection({ data, onViewProjects }: HeroSectionProps) {
         <div className="hero-copy">
           <div className="hero-availability">
             <span className="hero-availability-dot" />
-            AVAILABLE · MAY 2026 · OPEN TO PRODUCT · FINTECH · AI
+            AVAILABLE · MAY 2026 · OPEN TO PRODUCT · FINTECH · DATA · AI
           </div>
           <h1 ref={nameRef} className="hero-name">
             <TextPressure text={data.name} />

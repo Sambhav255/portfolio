@@ -88,7 +88,6 @@ export const MagnetLines: React.FC<MagnetLinesProps> = ({
             backgroundColor: lineColor,
             width: lineWidth,
             height: `calc(${lineHeight} * ${scale.toFixed(2)})`,
-            // @ts-expect-error custom property
             '--rotate': `${baseAngle}deg`,
             transform: 'rotate(var(--rotate))',
             willChange: 'transform',

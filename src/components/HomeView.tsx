@@ -63,8 +63,10 @@ export function HomeView({ onNavigate }: HomeViewProps) {
           </div>
           <div className="projects-grid">
             {featuredProjects.map((p) => {
-              const isFlagship = !!(p as Record<string, unknown>).flagship
-              const projectContext = (p as Record<string, unknown>).projectContext as string | undefined
+              const withMeta = p as { flagship?: boolean; projectContext?: string; logo?: string }
+              const isFlagship = !!withMeta.flagship
+              const projectContext = withMeta.projectContext
+              const logo = withMeta.logo
               const demoUrl = p.demoUrl
               return (
                 <div
@@ -89,7 +91,10 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                       })
                     }
                   >
-                    <h3>{p.name}</h3>
+                    <div className="project-title-row">
+                      {logo && <img src={logo} alt="Ruta'al logo" className="project-logo" />}
+                      <h3>{p.name}</h3>
+                    </div>
                     <p className="one-liner">{p.oneLiner}</p>
                     {projectContext && <p className="project-context">{projectContext}</p>}
                     <p className="description">{p.description}</p>
@@ -137,7 +142,10 @@ export function HomeView({ onNavigate }: HomeViewProps) {
           </div>
           <div className="home-about-right">
             <div className="section-label">Current Obsession</div>
-            <h3 className="home-about-heading">Why I&apos;m building Ruta&apos;al</h3>
+            <div className="home-about-heading-row">
+              <h3 className="home-about-heading">Why I&apos;m building Ruta&apos;al</h3>
+              <img src="/rutaal-logo.png" alt="Ruta'al logo" className="home-about-logo" />
+            </div>
             <p className="home-about-body">
               250 million informal workers in Mexico and Nepal operate entirely outside the formal financial system: no credit score, no bank account, no safety net. Ruta&apos;al is a USSD-based fintech platform that works without smartphones or internet. I&apos;ve led product strategy, built the functional prototype, conducted TAM/SAM/SOM analysis, and pitched to investors and judges across three competitions.
             </p>

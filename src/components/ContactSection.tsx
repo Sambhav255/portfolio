@@ -46,7 +46,9 @@ export function ContactSection({
     }
   }, [contact.headline])
 
-  const emailAddr = contact.email.replace('mailto:', '')
+  const rawEmail = contact.email ?? ''
+  const emailAddr = rawEmail.replace(/^mailto:/i, '')
+  const mailtoHref = rawEmail.startsWith('mailto:') ? rawEmail : (emailAddr ? `mailto:${emailAddr}` : 'mailto:lami9190@stthomas.edu')
 
   return (
     <div className="contact-inner">
@@ -63,7 +65,11 @@ export function ContactSection({
       <p className="contact-response">Response time: usually within 24 hours.</p>
       <p className="contact-email-text">{emailAddr}</p>
       <div className="contact-buttons">
-        <a href={contact.email.startsWith('mailto:') ? contact.email : `mailto:${contact.email}`} className="btn-contact-primary magnetic-el">
+        <a
+          href={mailtoHref}
+          className="btn-contact-primary magnetic-el"
+          title={`Email ${emailAddr}`}
+        >
           {contact.cta}
         </a>
         <a href={contact.linkedin} className="btn-contact-secondary magnetic-el" target="_blank" rel="noopener noreferrer">

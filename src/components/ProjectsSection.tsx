@@ -23,7 +23,12 @@ function ProjectCard({ p, featured, onOpen }: { p: Project; featured?: boolean; 
   return (
     <div className={`project-card magnetic-el ${featured ? 'project-card-featured' : ''} ${p.flagship ? 'project-card-flagship' : ''}`}>
       <button type="button" className="project-card-link project-card-button" onClick={onOpen}>
-        <h3>{p.name}</h3>
+        <div className="project-title-row">
+          {'logo' in p && p.logo && (
+            <img src={p.logo} alt="Ruta'al logo" className="project-logo" />
+          )}
+          <h3>{p.name}</h3>
+        </div>
         <p className="one-liner">{p.oneLiner}</p>
         {p.projectContext && (
           <p className="project-context">{p.projectContext}</p>
@@ -129,26 +134,32 @@ export function ProjectsSection({
           <ProjectCard key={p.name} p={p} onOpen={() => setActiveProject(p)} />
         ))}
       </div>
-      {otherProjects.length > 0 && (
-        <div className="other-work-card-wrap">
+      <div className="other-work-card-wrap">
+        <div className="other-work-grid">
+          {otherProjects.length > 0 && (
+            <div className="other-work-card" key={otherProjects[0].name}>
+              <div className="other-work-label">OTHER WORK</div>
+              <h4 className="other-work-title">{otherProjects[0].name}</h4>
+              <p className="other-work-text">{otherProjects[0].description}</p>
+              {otherProjects[0].link && otherProjects[0].link !== '#' && (
+                <a href={otherProjects[0].link} target="_blank" rel="noopener noreferrer" className="other-work-link">
+                  View demo →
+                </a>
+              )}
+            </div>
+          )}
           <div className="other-work-card">
-            <div className="other-work-label">OTHER WORK</div>
+            <div className="other-work-label">UNIVERSITY RESEARCH · R · DATA ANALYTICS</div>
+            <h4 className="other-work-title">Equity in EV Infrastructure</h4>
             <p className="other-work-text">
-              {otherProjects.map((p, i) => (
-                <span key={p.name}>
-                  {i > 0 && ' '}
-                  <strong>{p.name}</strong>: {p.description}
-                  {p.link && p.link !== '#' && (
-                    <a href={p.link} target="_blank" rel="noopener noreferrer" className="other-work-view">
-                      {' '}View
-                    </a>
-                  )}
-                </span>
-              ))}
+              Built a multi-variable correlation analysis in R linking EV ownership, vehicle cost, charger density, and income across Twin Cities ZIP codes — surfacing infrastructure mismatches and presenting equity-focused siting recommendations at a university data competition.
             </p>
+            <a href="/datacom_poster.pdf" target="_blank" rel="noopener noreferrer" className="other-work-link">
+              View research poster →
+            </a>
           </div>
         </div>
-      )}
+      </div>
       {activeProject && (
         <ProjectModal
           project={{
@@ -161,7 +172,7 @@ export function ProjectsSection({
             pitchDeckUrl: activeProject.pitchDeckUrl,
             results: activeProject.results,
             why: activeProject.why,
-            doDifferently: (activeProject as Record<string, unknown>).doDifferently as string | undefined,
+            doDifferently: activeProject.doDifferently,
           }}
           onClose={() => setActiveProject(null)}
         />

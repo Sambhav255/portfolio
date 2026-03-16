@@ -722,6 +722,20 @@ body {
   margin-bottom: var(--space-md);
 }
 
+.home-about-heading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--space-md);
+}
+
+.home-about-logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
 .home-about-body {
   font-size: 15px;
   line-height: 1.85;
@@ -932,6 +946,20 @@ body {
   padding-left: 42px;
 }
 
+.journey-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--space-sm);
+}
+
+.journey-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
 .journey-card-date {
   font-size: 11px;
   letter-spacing: 0.1em;
@@ -946,7 +974,6 @@ body {
   letter-spacing: -0.01em;
   text-transform: none;
   color: var(--accent);
-  margin-bottom: var(--space-sm);
   line-height: 1.3;
 }
 
@@ -1074,6 +1101,35 @@ body {
 .project-card-flagship {
   border-left: 3px solid var(--accent-navy);
   padding-left: 25px;
+}
+
+.project-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  margin-bottom: var(--space-xs);
+}
+
+.project-logo {
+  width: 150px;
+  height: auto;
+  max-height: 80px;
+  object-fit: contain;
+  border-radius: 6px;
+  flex-shrink: 0;
+  font-weight: 800;
+}
+
+.project-title-row h3 {
+  flex: 1;
+}
+
+@media (max-width: 700px) {
+  .project-logo {
+    width: 110px;
+    max-height: 64px;
+  }
 }
 
 .project-card-link {
@@ -1268,6 +1324,18 @@ body {
   margin-top: 2.5rem;
 }
 
+.other-work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+@media (max-width: 700px) {
+  .other-work-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .other-work-card {
   background: #F7F6F3;
   border: 1px solid #E4E2DC;
@@ -1276,22 +1344,42 @@ body {
 }
 
 .other-work-label {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #8A8780;
+  margin-bottom: 6px;
+}
+
+.other-work-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0F0F0F;
   margin-bottom: 8px;
+  line-height: 1.3;
 }
 
 .other-work-text {
-  font-size: 14px;
-  color: #8A8780;
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #3D3D3D;
   margin: 0;
 }
 
 .other-work-text strong {
   color: var(--text-body);
+}
+
+.other-work-link {
+  display: inline-block;
+  font-size: 12px;
+  color: #8A8780;
+  text-decoration: none;
+  margin-top: 12px;
+}
+
+.other-work-link:hover {
+  text-decoration: underline;
 }
 
 .other-work-view {
