@@ -10,6 +10,7 @@ interface SectionData {
 
 interface Project extends ProjectDetails {
   link: string
+  logo?: string
   prdUrl?: string
   featured?: boolean
   flagship?: boolean

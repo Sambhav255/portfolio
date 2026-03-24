@@ -113,24 +113,31 @@
       "tags": ["Fintech", "Product Strategy", "Emerging Markets", "USSD"]
     },
     {
-      "name": "VibeTicker: Market Sentiment Dashboard",
-      "oneLiner": "Real-time sentiment vs. price data",
-      "description": "Real-time dashboard comparing AI-analyzed financial news sentiment with live equity, ETF, and crypto price data. Built with TypeScript and server-side API integration using Gemini.",
+      "name": "Vigil — Geopolitical Intelligence Dashboard",
+      "oneLiner": "Live geopolitical intelligence dashboard for traders and risk teams using 9 data sources and AI analysis.",
+      "description": "Vigil monitors global geopolitical threats and surfaces their financial market implications in real time. It pulls from 9 data sources, runs a 3-phase scoring pipeline, and ranks deduplicated threats alongside portfolio exposure insights. Built with Next.js, TypeScript, and Convex; deployed on Vercel.",
       "featured": true,
       "flagship": false,
-      "projectContext": "TypeScript · Gemini API · Real-time sentiment vs. price data",
+      "projectContext": "Next.js 16 · TypeScript · React 18 · Convex · Vitest · CSS Modules · Vercel · Gemini AI",
       "detailedDescription": [
-        "<strong>The problem:</strong> Retail investors react to news headlines without any structured way to correlate sentiment with actual price movement in real time.",
-        "<strong>What I built:</strong> A TypeScript dashboard that pulls live Gemini-analyzed news sentiment and maps it against equity, ETF, and crypto price data via server-side API integration.",
-        "<strong>Technical decision I made:</strong> Chose server-side API calls over client-side to avoid exposing API keys and reduce latency, a tradeoff between security and build complexity.",
-        "<strong>Status:</strong> Live on Vercel. <a href=\"https://vibeticker-rose.vercel.app/\" target=\"_blank\" rel=\"noopener noreferrer\">View VibeTicker</a>"
+        "<strong>The problem:</strong> Traders and risk teams often see fragmented geopolitical signals across markets, macro data, and event feeds, making it hard to prioritize real risk in real time.",
+        "<strong>What I built:</strong> A Bloomberg Terminal-style dashboard with a live threat feed, sector risk heatmap, portfolio exposure tracker, and force decomposition panel updating every 15 seconds.",
+        "<strong>Scoring + data pipeline:</strong> Built a 3-phase threat scoring system (confidence tiering, probability bias correction, and temporal decay) plus Jaccard-based deduplication across 9 sources.",
+        "<strong>AI + reliability:</strong> Integrated Gemini for on-demand threat analysis with endpoint-level rate limiting, graceful fallback behavior, and Convex tracking for post-hoc directional accuracy."
       ],
-      "link": "https://vibeticker-rose.vercel.app/",
-      "prdUrl": "#",
-      "demoUrl": "https://vibeticker-rose.vercel.app/",
+      "link": "https://vigildashboard.vercel.app/",
+      "demoUrl": "https://vigildashboard.vercel.app/",
       "repoUrl": "#",
-      "why": "This started from my obsession with markets: I wanted a single lens that connects narrative (news) to price action in real time, so you can test whether sentiment actually leads returns or just feels convincing.",
-      "tags": ["Fintech", "AI", "TypeScript", "Real-time Data"]
+      "why": "I wanted to unify geopolitical signal detection and market impact analysis in one system, so decision-makers can act on ranked risk instead of chasing disconnected headlines.",
+      "results": [
+        "Aggregated 9 live sources in parallel with graceful degradation when providers fail",
+        "Designed 3-phase scoring with probability bias correction and temporal decay",
+        "Implemented Jaccard similarity deduplication to merge correlated threats",
+        "Added regime-switching sensitivity when global risk crosses escalation thresholds",
+        "Maintained TypeScript strict mode and full test coverage across scoring and pipeline logic"
+      ],
+      "doDifferently": "I would add a replay mode sooner so teams can backtest alert quality against market moves over longer windows and tune thresholds faster.",
+      "tags": ["Next.js", "TypeScript", "Convex", "Gemini AI", "Risk Intelligence", "Real-time Data"]
     },
     {
       "name": "CardSense: AI Credit Card Optimizer",
@@ -150,6 +157,26 @@
       "repoUrl": "#",
       "why": "I’m fascinated by consumer fintech and incentives. CardSense exists to turn messy spending data into clear, actionable decisions: what card to use, what you’re leaving on the table, and how to optimize rewards without spreadsheets.",
       "tags": ["AI", "React", "Gemini API", "Consumer Fintech"]
+    },
+    {
+      "name": "VibeTicker: Market Sentiment Dashboard",
+      "oneLiner": "Real-time sentiment vs. price data",
+      "description": "Real-time dashboard comparing AI-analyzed financial news sentiment with live equity, ETF, and crypto price data. Built with TypeScript and server-side API integration using Gemini.",
+      "featured": true,
+      "flagship": false,
+      "projectContext": "TypeScript · Gemini API · Real-time sentiment vs. price data",
+      "detailedDescription": [
+        "<strong>The problem:</strong> Retail investors react to news headlines without any structured way to correlate sentiment with actual price movement in real time.",
+        "<strong>What I built:</strong> A TypeScript dashboard that pulls live Gemini-analyzed news sentiment and maps it against equity, ETF, and crypto price data via server-side API integration.",
+        "<strong>Technical decision I made:</strong> Chose server-side API calls over client-side to avoid exposing API keys and reduce latency, a tradeoff between security and build complexity.",
+        "<strong>Status:</strong> Live on Vercel. <a href=\"https://vibeticker-rose.vercel.app/\" target=\"_blank\" rel=\"noopener noreferrer\">View VibeTicker</a>"
+      ],
+      "link": "https://vibeticker-rose.vercel.app/",
+      "prdUrl": "#",
+      "demoUrl": "https://vibeticker-rose.vercel.app/",
+      "repoUrl": "#",
+      "why": "This started from my obsession with markets: I wanted a single lens that connects narrative (news) to price action in real time, so you can test whether sentiment actually leads returns or just feels convincing.",
+      "tags": ["Fintech", "AI", "TypeScript", "Real-time Data"]
     },
     {
       "name": "Common Table: Campus Food Shelf Resources",
