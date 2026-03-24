@@ -75,7 +75,7 @@ export function HeroSection({ data, onViewProjects }: HeroSectionProps) {
           <div className="hero-portrait-ring">
             {!imgError ? (
               <img
-                src="/portrait.jpg"
+                src="/portrait.png"
                 alt={data.name}
                 className="hero-portrait"
                 onError={() => setImgError(true)}

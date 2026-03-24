@@ -113,7 +113,7 @@
       "tags": ["Fintech", "Product Strategy", "Emerging Markets", "USSD"]
     },
     {
-      "name": "Vigil — Geopolitical Intelligence Dashboard",
+      "name": "Vigil: Geopolitical Intelligence Dashboard",
       "oneLiner": "Live geopolitical intelligence dashboard for traders and risk teams using 9 data sources and AI analysis.",
       "description": "Vigil monitors global geopolitical threats and surfaces their financial market implications in real time. It pulls from 9 data sources, runs a 3-phase scoring pipeline, and ranks deduplicated threats alongside portfolio exposure insights. Built with Next.js, TypeScript, and Convex; deployed on Vercel.",
       "featured": true,
