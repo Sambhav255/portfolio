@@ -48,7 +48,9 @@ export function ContactSection({
 
   const rawEmail = contact.email ?? ''
   const emailAddr = rawEmail.replace(/^mailto:/i, '')
-  const mailtoHref = rawEmail.startsWith('mailto:') ? rawEmail : (emailAddr ? `mailto:${emailAddr}` : 'mailto:lami9190@stthomas.edu')
+  const composeHref = emailAddr
+    ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddr)}`
+    : 'https://mail.google.com/mail/?view=cm&fs=1&to=lami9190%40stthomas.edu'
 
   return (
     <div className="contact-inner">
@@ -66,9 +68,11 @@ export function ContactSection({
       <p className="contact-email-text">{emailAddr}</p>
       <div className="contact-buttons">
         <a
-          href={mailtoHref}
+          href={composeHref}
           className="btn-contact-primary magnetic-el"
           title={`Email ${emailAddr}`}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {contact.cta}
         </a>

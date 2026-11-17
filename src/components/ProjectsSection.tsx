@@ -159,6 +159,16 @@ export function ProjectsSection({
               View research poster →
             </a>
           </div>
+          <div className="other-work-card">
+            <div className="other-work-label">PERSONAL BUILD · REACT · TYPESCRIPT · VITE</div>
+            <h4 className="other-work-title">Interactive Portfolio Website</h4>
+            <p className="other-work-text">
+              I designed and built this portfolio website myself from scratch, including the animated tabbed navigation, custom project modals, magnetic micro-interactions, and scroll-driven motion system. The site is fully responsive, production-deployed on Vercel, and structured for quick recruiter scanning while still supporting deeper project storytelling.
+            </p>
+            <a href="https://sambhav.vercel.app" target="_blank" rel="noopener noreferrer" className="other-work-link">
+              View live site →
+            </a>
+          </div>
         </div>
       </div>
       {activeProject && (

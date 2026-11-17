@@ -1,235 +1,26 @@
-import { useRef, useEffect, useState, useCallback } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useLenis } from './hooks/useLenis'
-import { useMagnetic } from './hooks/useMagnetic'
-import { BackgroundMagnetField } from './components/BackgroundMagnetField'
-import { Navbar, TabId } from './components/Navbar'
-import { HomeView } from './components/HomeView'
-import { ProjectsSection } from './components/ProjectsSection'
-import { JourneyResume } from './components/JourneyResume'
-import { ContactSection } from './components/ContactSection'
-import { Footer } from './components/Footer'
-import experience from './experience.json'
-import './index.css'
+import { useEffect, useState } from 'react'
+import { featured, moreWork, earlierWork, type Project } from './portfolio'
+import './portfolio.css'
 
-gsap.registerPlugin(ScrollTrigger)
-
-const TAB_PROGRESS: Record<TabId, number> = {
-  home: 0,
-  projects: 0.4,
-  journey: 0.6,
-  contact: 0.9,
+const base = 'https://www.sambhav.app'
+function Card({ project }: { project: Project }) {
+  return <article className="work-card"><p className="eyebrow">{project.status}</p><h3>{project.title}</h3><p>{project.summary}</p><p className="proof">{project.proof}</p><a href={`/work/${project.slug}`}>Read {project.title} →</a></article>
 }
-
 function App() {
-  useLenis()
-  useMagnetic()
-  const scrollProgressRef = useRef(0)
-  const morphProgressRef = useRef(0)
-  const journeyGlowRef = useRef(0)
-  const [activeTab, setActiveTab] = useState<TabId>('home')
-  const cursorRef = useRef<HTMLDivElement>(null)
-  const cursorExpandedRef = useRef(false)
-  const panelRef = useRef<HTMLDivElement>(null)
-  const prevTabRef = useRef<TabId>('home')
-
-  const handleTabChange = useCallback((tab: TabId) => {
-    setActiveTab(tab)
+  const [path, setPath] = useState(location.pathname)
+  useEffect(() => {
+    const onPop = () => setPath(location.pathname)
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
   }, [])
-
+  const project = featured.find(p => path === `/work/${p.slug}`)
+  const isHome = path === '/'
   useEffect(() => {
-    const targetMorph = activeTab === 'journey' ? 1 : 0
-    const targetGlow = activeTab === 'journey' ? 1 : 0
-    const targetScroll = TAB_PROGRESS[activeTab]
-
-    gsap.to(morphProgressRef, {
-      current: targetMorph,
-      duration: 1.5,
-      ease: 'power2.inOut',
-    })
-    gsap.to(journeyGlowRef, {
-      current: targetGlow,
-      duration: 1.5,
-      ease: 'power2.inOut',
-    })
-    gsap.to(scrollProgressRef, {
-      current: targetScroll,
-      duration: 1.5,
-      ease: 'power2.inOut',
-    })
-  }, [activeTab])
-
-  useEffect(() => {
-    const container = panelRef.current
-    if (!container) return
-
-    const prev = prevTabRef.current
-    const next = activeTab
-
-    const panels = Array.from(container.querySelectorAll('[data-tab]')) as HTMLElement[]
-    panels.forEach((p) => {
-      gsap.set(p, { autoAlpha: 0 })
-      p.style.position = 'absolute'
-      p.style.pointerEvents = 'none'
-    })
-
-    if (prev === next) {
-      const current = container.querySelector(`[data-tab="${next}"]`) as HTMLElement | null
-      if (current) {
-        gsap.set(current, {
-          autoAlpha: 1,
-          position: 'relative',
-          pointerEvents: 'auto',
-        })
-      }
-      return
-    }
-
-    prevTabRef.current = next
-    const outgoing = container.querySelector(`[data-tab="${prev}"]`) as HTMLElement | null
-    const incoming = container.querySelector(`[data-tab="${next}"]`) as HTMLElement | null
-
-    window.scrollTo({ top: 0, behavior: 'auto' })
-
-    if (outgoing) {
-      gsap.to(outgoing, {
-        autoAlpha: 0,
-        y: -12,
-        duration: 0.25,
-        ease: 'power2.inOut',
-        onStart: () => {
-          outgoing.style.position = 'absolute'
-          outgoing.style.pointerEvents = 'none'
-        },
-      })
-    }
-
-    if (incoming) {
-      gsap.fromTo(
-        incoming,
-        { autoAlpha: 0, y: 16 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.4,
-          ease: 'power2.out',
-          delay: 0.1,
-          onStart: () => {
-            incoming.style.position = 'relative'
-            incoming.style.pointerEvents = 'auto'
-          },
-          onComplete: () => {
-            ScrollTrigger.refresh()
-          },
-        }
-      )
-    }
-  }, [activeTab])
-
-  useEffect(() => {
-    const isTouchDevice = window.matchMedia('(hover: none)').matches
-    if (isTouchDevice) return
-
-    const ring = cursorRef.current
-    if (!ring) return
-
-    const setLeft = gsap.quickSetter(ring, 'left', 'px')
-    const setTop = gsap.quickSetter(ring, 'top', 'px')
-
-    const handleMove = (e: MouseEvent) => {
-      setLeft(e.clientX)
-      setTop(e.clientY)
-    }
-    const handleOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      if (target?.closest?.('.btn-glass') || target?.closest?.('.project-card') || target?.closest?.('.journey-card')) {
-        if (!cursorExpandedRef.current) {
-          cursorExpandedRef.current = true
-          ring.classList.add('expanded')
-        }
-      }
-    }
-    const handleOut = (e: MouseEvent) => {
-      const related = e.relatedTarget as HTMLElement
-      if (!related?.closest?.('.btn-glass') && !related?.closest?.('.project-card') && !related?.closest?.('.journey-card')) {
-        if (cursorExpandedRef.current) {
-          cursorExpandedRef.current = false
-          ring.classList.remove('expanded')
-        }
-      }
-    }
-    document.addEventListener('mousemove', handleMove, { passive: true })
-    document.addEventListener('mouseover', handleOver, { passive: true })
-    document.addEventListener('mouseout', handleOut, { passive: true })
-    document.body.classList.add('custom-cursor')
-    return () => {
-      document.removeEventListener('mousemove', handleMove)
-      document.removeEventListener('mouseover', handleOver)
-      document.removeEventListener('mouseout', handleOut)
-      document.body.classList.remove('custom-cursor')
-    }
-  }, [])
-
-  return (
-    <>
-      <a href="#main-content" className="skip-link">Skip to content</a>
-      <BackgroundMagnetField />
-      <Navbar activeTab={activeTab} onTabChange={handleTabChange} />
-      <div
-        ref={cursorRef}
-        className="cursor-ring"
-        aria-hidden="true"
-      />
-      <div ref={panelRef} id="main-content" className="tab-content">
-        <div
-          data-tab="home"
-          className="tab-panel"
-        >
-          <div className="tab-panel-inner">
-            <HomeView onNavigate={handleTabChange} />
-            <Footer />
-          </div>
-        </div>
-        <div
-          data-tab="projects"
-          className="tab-panel"
-        >
-          <div className="tab-panel-inner">
-            <section className="section section-compact">
-              <ProjectsSection
-                data={experience.sections[2]}
-                projects={experience.projects}
-                isActive={activeTab === 'projects'}
-              />
-            </section>
-            <Footer />
-          </div>
-        </div>
-        <div
-          data-tab="journey"
-          className="tab-panel"
-        >
-          <div className="tab-panel-inner journey-section-wrapper">
-            <JourneyResume />
-            <Footer />
-          </div>
-        </div>
-        <div
-          data-tab="contact"
-          className="tab-panel"
-        >
-          <div className="tab-panel-inner tab-panel-inner-contact">
-            <section className="section section-compact section-contact">
-              <ContactSection data={experience.sections[3]} contact={experience.contact} />
-            </section>
-            <Footer />
-          </div>
-        </div>
-      </div>
-      <div className="grain" aria-hidden="true" />
-    </>
-  )
+    document.title = project ? `${project.title} | Sambhav Lamichhane` : `${path === '/work' ? 'Work | ' : path === '/about' ? 'About | ' : ''}Sambhav Lamichhane`
+  }, [path, project])
+  return <><a className="skip" href="#main">Skip to content</a><header><a className="brand" href="/">Sambhav Lamichhane</a><nav aria-label="Main navigation"><a href="/work">Work</a><a href="/about">About</a><a href="/#contact">Contact</a></nav></header><main id="main" tabIndex={-1}>
+    {isHome ? <><section className="hero"><div><p className="eyebrow">Kathmandu → Minnesota</p><h1>Sambhav<br />Lamichhane</h1><p className="intro">I build products that make costs, tradeoffs, and messy data easier to understand.</p><p>M.S. in Data Science student and New Product Tech Ventures Fellow at the University of St. Thomas.</p><div className="actions"><a className="primary" href="#selected">View selected work</a><a href="#contact">Get in touch →</a></div></div><img src="/portrait.png" alt="Sambhav Lamichhane" width="450" height="450" /></section><section id="selected"><div className="section-heading"><div><p className="eyebrow">Research · Product · Data</p><h2>Selected work</h2></div><a href="/work">See all work →</a></div><div className="cards">{featured.map(p => <Card key={p.slug} project={p} />)}</div></section><section className="about-short"><p className="eyebrow">About</p><h2>From Kathmandu to Minnesota.</h2><p>I grew up around my family’s motorcycle dealership in Kathmandu, where I learned how business decisions affect people. At St. Thomas, I bring that curiosity to research and building tools for real workflows.</p><a href="/about">More about me →</a></section></> : project ? <article className="case"><a href="/work">← All work</a><p className="eyebrow">{project.status}</p><h1>{project.title}</h1><p className="intro">{project.summary}</p><p className="proof">{project.role}</p><p>{project.proof}</p>{project.sections.map(s => <section key={s.heading}><h2>{s.heading}</h2><p>{s.body}</p></section>)}</article> : path === '/work' ? <section><p className="eyebrow">Selected projects and research</p><h1>Work</h1><div className="cards">{featured.map(p => <Card key={p.slug} project={p} />)}</div>{[[ 'More work', moreWork ], ['Earlier work', earlierWork ]].map(([heading, entries]) => <section key={heading as string}><h2>{heading as string}</h2><div className="archive">{(entries as typeof moreWork).map(p => <article key={p.title}><h3>{p.title}</h3><p>{p.summary}</p>{p.url && <a href={p.url}>{p.title.includes('EV') ? 'View research poster' : 'Visit project'} →</a>}</article>)}</div></section>)}</section> : path === '/about' ? <section className="case"><p className="eyebrow">About</p><h1>Curious about how things work.</h1><p className="intro">I grew up in Kathmandu and came to Minnesota for college. My family’s motorcycle dealership was an early lesson in how decisions and relationships shape a business.</p><h2>Now</h2><p>I’m an M.S. in Data Science student and New Product Tech Ventures Fellow at the University of St. Thomas, with graduation expected in December 2027.</p><h2>Along the way</h2><p>In 2026 I researched remittances with Nepal’s Ministry of Foreign Affairs and built an internal point of sale system at Refresh Recreation Center. Earlier, I worked at LEAF Lab and STELAR and cofounded the Ruta’al prototype.</p><p>During my first month at St. Thomas, I campaigned for class president with a homemade poster on a yardstick.</p><p>I recently started a project called Foremargin to explore how to estimate AI task costs before a run.</p></section> : <section className="case"><h1>Page not found</h1><p>That page is unavailable.</p><a href="/work">Explore the work →</a></section>}
+    <section id="contact" className="contact"><p className="eyebrow">Get in touch</p><h2>Let’s talk.</h2><p>I’m happy to talk about product, applied AI, fintech, and data projects. You can reach me by email or on LinkedIn.</p><div className="actions"><a href="mailto:lami9190@stthomas.edu">Email ↗</a><a href="https://linkedin.com/in/sambhavlamichhane">LinkedIn ↗</a><a href="https://github.com/Sambhav255">GitHub ↗</a></div></section>
+  </main><footer>© {new Date().getFullYear()} Sambhav Lamichhane <a href={base}>sambhav.app</a></footer></>
 }
-
 export default App
